@@ -1,27 +1,45 @@
 const addBook = document.querySelector(".add-book");
+const closeModal = document.querySelector(".close-modal");
 const Modal = document.querySelector(".modal");
 const bookForm = document.getElementById("book-form");
 
 addBook.addEventListener("click", () => Modal.classList.remove("hidden"));
+closeModal.addEventListener("click", () => Modal.classList.add("hidden"));
 
 let myLibrary = [];
 
-function Book(title, author, pages, index) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.index = index;
-  this.isRead = false;
-  this.info = function () {
-    return `${this.title}, ${this.pages}, ${this.author}`;
-  };
-}
+class Book {
+  constructor(title, author, pages, index) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.index = index;
+    this.isRead = false;
+  }
 
-function readStatus(e) {
-  let title = e.target.parentNode.firstChild.innerText.toLowerCase();
+  readStatus(e) {
+    this.isRead = !this.isRead;
 
-  book.isRead = !book.isRead;
-  showBooks();
+    showBooks();
+  }
+
+  isReadedFunc() {
+    this.isRead = !this.isRead;
+    showBooks();
+  }
+
+  get bookIndex() {
+    return this.index;
+  }
+
+  removeBook(index) {
+    myLibrary = myLibrary.filter((book) => book.index !== index);
+    showBooks();
+  }
+  removeBookfunc(e) {
+    removeBook(title);
+    showBooks();
+  }
 }
 
 function addBookToLibrary(title, author, pages, index) {
@@ -29,30 +47,16 @@ function addBookToLibrary(title, author, pages, index) {
   myLibrary.push(book);
 }
 
-function removeBook(index) {
-  // myLibrary = myLibrary.filter((book) => book.title.toLowerCase() !== title);
-
-  myLibrary = myLibrary.filter((book) => book.index !== index);
-  showBooks();
-}
-
-const removeBookfunc = (e) => {
-  // let title = e.target.parentNode.firstChild.innerText.toLowerCase();
-
-  removeBook(title);
-  showBooks();
-};
-
-function resetBooks() {
-  const Cards = document.querySelectorAll(".card");
-  Cards.forEach((el) => el.remove());
-}
-
 function showBooks() {
+  function resetBooks() {
+    const Cards = document.querySelectorAll(".card");
+    Cards.forEach((el) => el.remove());
+  }
+
   resetBooks();
 
   for (let book of myLibrary) {
-    let index = book.index;
+    let index = book.bookIndex;
     const main = document.querySelector("main");
 
     const card = document.createElement("div");
@@ -63,19 +67,18 @@ function showBooks() {
     const removeBtn = document.createElement("button");
     const readBtn = document.createElement("button");
 
-    card.setAttribute("data-index", book.index);
+    card.setAttribute("data-index", book.bookIndex);
 
     readBtn.classList.add("button");
 
     readBtn.addEventListener("click", () => {
-      book.isRead = !book.isRead;
-      showBooks();
+      book.isReadedFunc();
     });
 
     removeBtn.textContent = "Remove";
     removeBtn.classList.add("button");
     removeBtn.addEventListener("click", () => {
-      removeBook(index);
+      book.removeBook(index);
     });
 
     if (book.isRead) {
