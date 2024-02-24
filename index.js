@@ -101,12 +101,57 @@ let index = 0;
 bookForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  let bookTitle = document.getElementById("book-title").value;
-  let bookAuthor = document.getElementById("book-author").value;
-  let bookPages = document.getElementById("book-pages").value;
+  const inputs = document.querySelectorAll("input");
 
-  addBookToLibrary(bookTitle, bookAuthor, bookPages, index);
-  showBooks();
+  inputs.forEach((input) =>
+    input.addEventListener("input", (event) => {
+      // Each time the user types something, we check if the
+      // form fields are valid.
+
+      Array.from(bookForm.elements).forEach((i) => {
+        if (i.checkValidity()) {
+          // field is valid - remove class
+          i.parentElement.classList.remove("invalid");
+        } else {
+          // field is invalid - add class
+          i.parentElement.classList.add("invalid");
+          i.parentElement.lastElementChild.textContent =
+            "Missing value required";
+          console.log(i);
+        }
+      });
+    })
+  );
+
+  if (bookForm.checkValidity()) {
+    Array.from(bookForm.elements).forEach((i) => {
+      if (i.checkValidity()) {
+        // field is valid - remove class
+        i.parentElement.classList.remove("invalid");
+      }
+    });
+
+    let bookTitle = document.getElementById("book-title").value;
+    let bookAuthor = document.getElementById("book-author").value;
+    let bookPages = document.getElementById("book-pages").value;
+
+    addBookToLibrary(bookTitle, bookAuthor, bookPages, index);
+    showBooks();
+  } else {
+    Array.from(bookForm.elements).forEach((i) => {
+      if (i.checkValidity()) {
+        // field is valid - remove class
+        i.parentElement.classList.remove("invalid");
+      } else {
+        // field is invalid - add class
+        i.parentElement.classList.add("invalid");
+        i.parentElement.lastElementChild.textContent = "Missing value required";
+        console.log(i);
+      }
+    });
+
+    return;
+  }
 
   Modal.classList.add("hidden");
   bookForm.reset();

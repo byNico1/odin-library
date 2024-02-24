@@ -19,12 +19,42 @@
       </div>
 
       <div class="modal hidden">
-        <form action="" id="book-form">
+        <form action="" id="book-form" novalidate>
           <button type="button" class="button close-modal">X</button>
           <div class="form-content">
-            <input type="text" id="book-title" placeholder="Book Title" />
-            <input type="text" id="book-author" placeholder="Book Author" />
-            <input type="number" id="book-pages" placeholder="Book Pages" />
+            <label for="boot-title">
+              <span>Please Enter Your Book Title</span>
+              <input
+                minlength="1"
+                required
+                type="text"
+                id="book-title"
+                placeholder="Book Title"
+              />
+              <span class="error" aria-live="polite"></span>
+            </label>
+            <label for="boot-author">
+              <span>Please Enter Your Book Author</span>
+              <input
+                minlength="1"
+                required
+                type="text"
+                id="book-author"
+                placeholder="Book Author"
+              />
+              <span class="error" aria-live="polite"></span>
+            </label>
+            <label for="boot-pages">
+              <span>How Many Pages</span>
+              <input
+                minlength="1"
+                required
+                type="number"
+                id="book-pages"
+                placeholder="Book Pages"
+              />
+              <span class="error" aria-live="polite"></span>
+            </label>
           </div>
           <button type="submit" class="button submit">Submit</button>
         </form>
